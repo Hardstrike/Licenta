@@ -17,6 +17,7 @@
 package com.google.cloud.android.speech;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -37,7 +38,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import java.text.Normalizer;
+
 
 import java.util.ArrayList;
 
@@ -53,8 +57,37 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     private SpeechService mSpeechService;
 
     private VoiceRecorder mVoiceRecorder;
-    private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
 
+    public static void Mutare(String result, ImageView masina)
+    { String[] words=result.split(" ");
+        ObjectAnimator objectAnimator;
+
+        if(words[0].toLowerCase().equals("mută")||words[0].toLowerCase().equals("mata"))
+        {
+            int numar = Integer.parseInt(words[2]);
+            switch(words[1].toLowerCase())
+            {
+                case "dreapta":
+                    masina.animate().xBy(numar).start();
+                    break;
+                case "stânga":
+                    masina.animate().xBy(-numar).start();
+                    break;
+                case "sus":
+                    masina.animate().yBy(-numar).start();
+                    break;
+                case "jos":
+                    masina.animate().yBy(numar).start();
+                    break;
+                default:
+
+            }
+        }
+        }
+
+
+
+    private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
         @Override
         public void onVoiceStart() {
             showStatus(true);
@@ -90,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     private ResultAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
+
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -111,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
         mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
@@ -119,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         mStatus = (TextView) findViewById(R.id.status);
         mText = (TextView) findViewById(R.id.text);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         final ArrayList<String> results = savedInstanceState == null ? null :
@@ -190,8 +225,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+//    @Override
+   /* public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_file:
                 mSpeechService.recognizeInputStream(getResources().openRawResource(R.raw.audio));
@@ -199,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    } */
 
     private void startVoiceRecorder() {
         if (mVoiceRecorder != null) {
@@ -272,7 +307,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
     }
 
-    private static class ResultAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private class ResultAdapter extends RecyclerView.Adapter<ViewHolder>{
+
 
         private final ArrayList<String> mResults = new ArrayList<>();
 
@@ -297,8 +333,12 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
             return mResults.size();
         }
 
+
         void addResult(String result) {
             mResults.add(0, result);
+            ImageView masina;
+            masina=(ImageView)findViewById(R.id.masina);
+            Mutare(result, masina);
             notifyItemInserted(0);
         }
 
@@ -306,6 +346,9 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
             return mResults;
         }
 
+
+
     }
 
 }
+

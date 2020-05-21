@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context="com.google.cloud.android.speech.MainActivity">
 
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/car" />
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -21,9 +27,9 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:paddingLeft="32dp"
-            android:paddingRight="32dp"/>
+            android:paddingRight="32dp" />
 
-        <include layout="@layout/item_result"/>
+        <include layout="@layout/item_result" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -36,5 +42,12 @@
         android:paddingTop="@dimen/spacing_small"
         app:behavior_overlapTop="128dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <ImageView
+        android:id="@+id/masina"
+        android:layout_width="104dp"
+        android:layout_height="217dp"
+        android:scaleType="fitEnd"
+        app:srcCompat="@drawable/car2" />
 
 </android.support.design.widget.CoordinatorLayout>
